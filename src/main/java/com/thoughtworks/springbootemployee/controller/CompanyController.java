@@ -42,4 +42,9 @@ public class CompanyController {
 						.orElse(null)).getEmployees();
 	}
 
+	@PostMapping()
+	public Company addNewCompany(@RequestBody Company company) {
+		companies.add(company);
+		return company;
+	}
 }
