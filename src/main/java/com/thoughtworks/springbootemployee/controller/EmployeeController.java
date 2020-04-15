@@ -19,6 +19,14 @@ public class EmployeeController {
 		return employees;
 	}
 
+	@GetMapping("/{employeeId}")
+	public Employee getEmployeeById(@PathVariable int employeeId) {
+		return employees.stream()
+						.filter(employee -> employee.getId() == employeeId)
+						.findFirst()
+						.orElse(null);
+	}
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Employee addNewEmployee(@RequestBody Employee employee) {
