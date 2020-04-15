@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,14 @@ public class CompanyController {
 	@GetMapping
 	public List<Company> getCompanies() {
 		return companyList;
+	}
+
+	@GetMapping("/{companyId}")
+	public Company getSpecificCompany(@PathVariable int companyId) {
+		return companyList.stream()
+						.filter(company -> company.getCompanyId() == companyId)
+						.findFirst()
+						.orElse(null);
 	}
 
 }

@@ -34,7 +34,7 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/{employeeId}")
-	public Employee getEmployeeById(@PathVariable int employeeId) {
+	public Employee getSpecificEmployee(@PathVariable int employeeId) {
 		return employees.stream()
 						.filter(employee -> employee.getId() == employeeId)
 						.findFirst()
