@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,9 @@ public class CompanyController {
 
 	private List<Company> companyList = new ArrayList<Company>();
 
-	
+	@GetMapping
+	public List<Company> getCompanies() {
+		return companyList;
+	}
 
 }
