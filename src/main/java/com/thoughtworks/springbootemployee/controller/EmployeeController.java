@@ -16,11 +16,19 @@ public class EmployeeController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<Employee> getAllEmployees(@RequestParam(required = false) String gender) {
+	public List<Employee> getAllEmployees(@RequestParam(required = false) String gender,
+																				@RequestParam(required = false) Integer page,
+																				@RequestParam(required = false) Integer pageSize) {
 		if (gender != null) {
 			return employees.stream()
 							.filter(employee -> employee.getGender().equals(gender))
 							.collect(Collectors.toList());
+		}
+
+		if (page != null && pageSize != null) {
+			int firstEmployee = page * pageSize - 1;
+			int lastEmployee = page * pageSize - 1 + pageSize;
+			return employees.subList(firstEmployee, lastEmployee);
 		}
 		return employees;
 	}
