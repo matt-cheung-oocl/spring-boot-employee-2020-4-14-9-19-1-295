@@ -34,6 +34,7 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/{employeeId}")
+	@ResponseStatus(HttpStatus.OK)
 	public Employee getSpecificEmployee(@PathVariable int employeeId) {
 		return employees.stream()
 						.filter(employee -> employee.getId() == employeeId)
