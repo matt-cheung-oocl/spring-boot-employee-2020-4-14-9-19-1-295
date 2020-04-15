@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -46,5 +47,18 @@ public class CompanyController {
 	public Company addNewCompany(@RequestBody Company company) {
 		companies.add(company);
 		return company;
+	}
+
+	@PutMapping("/{companyId}")
+	@ResponseStatus(HttpStatus.OK)
+	public Company updateCompany(@PathVariable Integer companyId, @RequestBody Company updatedCompany) {
+		for (Company company : companies) {
+			if (company.getCompanyId() == companyId) {
+				company.setCompanyName(updatedCompany.getCompanyName());
+				company.setEmployeesNumber(updatedCompany.getEmployeesNumber());
+				company.setEmployees(updatedCompany.getEmployees());
+			}
+		}
+		return updatedCompany;
 	}
 }
