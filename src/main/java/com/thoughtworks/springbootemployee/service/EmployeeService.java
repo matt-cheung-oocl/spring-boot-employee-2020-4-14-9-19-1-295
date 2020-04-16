@@ -11,35 +11,35 @@ import java.util.List;
 public class EmployeeService {
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
+	private EmployeeRepository repository;
 
 	public List<Employee> getAllEmployees() {
-		return employeeRepository.findAll();
+		return repository.findAll();
 	}
 
-	public Employee getEmployeeById(int employeeId) {
-		return employeeRepository.findById(employeeId);
+	public Employee getEmployeeById(Integer employeeId) {
+		return repository.findById(employeeId);
 	}
 
 	public Employee createEmployee(Employee employee) {
-		return employeeRepository.save(employee);
+		return repository.save(employee);
 	}
 
-	public void removeEmployee(int employeeId) {
-		employeeRepository.delete(employeeId);
+	public void removeEmployee(Integer employeeId) {
+		repository.delete(employeeId);
 	}
 
-	public Employee updateEmployee(int employeeId, Employee updatedEmployee) {
-		return employeeRepository.update(employeeId, updatedEmployee);
+	public Employee updateEmployee(Integer employeeId, Employee updatedEmployee) {
+		return repository.update(employeeId, updatedEmployee);
 	}
 
 	public List<Employee> getEmployeesByGender(String gender) {
-		return employeeRepository.findByGender(gender);
+		return repository.findByGender(gender);
 	}
 
 	public List<Employee> getEmployeesByPage(int page, int pageSize) {
 		int firstEmployee = page * pageSize - 1;
 		int lastEmployee = page * pageSize - 1 + pageSize;
-		return employeeRepository.findByPage(firstEmployee, lastEmployee);
+		return repository.findByPage(firstEmployee, lastEmployee);
 	}
 }
