@@ -34,7 +34,7 @@ public class EmployeeController {
 
 	@GetMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee getSpecificEmployee(@PathVariable Integer employeeId) {
+	public Employee getSpecificEmployee(@PathVariable int employeeId) {
 		return employeeService.getEmployeeById(employeeId);
 	}
 
@@ -46,13 +46,13 @@ public class EmployeeController {
 
 	@PutMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee updatedEmployee) {
+	public Employee updateEmployee(@PathVariable int employeeId, @RequestBody Employee updatedEmployee) {
 		return employeeService.updateEmployee(employeeId, updatedEmployee);
 	}
 
 	@DeleteMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteEmployee(@PathVariable Integer employeeId) {
+	public void deleteEmployee(@PathVariable int employeeId) {
 		employeeService.removeEmployee(employeeId);
 	}
 }

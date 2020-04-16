@@ -21,7 +21,17 @@ public class EmployeeRepository {
 		return employees;
 	}
 
-	public Employee findById(Integer employeeId) {
+	public List<Employee> findByGender(String gender) {
+		return employees.stream()
+						.filter(employee -> employee.getGender().equals(gender))
+						.collect(Collectors.toList());
+	}
+
+	public List<Employee> findByPage(int firstEmployee, int lastEmployee) {
+		return employees.subList(firstEmployee, lastEmployee);
+	}
+
+	public Employee findById(int employeeId) {
 		return employees.stream()
 						.filter(employee -> employee.getId() == employeeId)
 						.findFirst()
@@ -33,11 +43,7 @@ public class EmployeeRepository {
 		return employee;
 	}
 
-	public void delete(Integer employeeId) {
-		employees.removeIf(employee -> employee.getId() == employeeId);
-	}
-
-	public Employee update(Integer employeeId, Employee updatedEmployee) {
+	public Employee update(int employeeId, Employee updatedEmployee) {
 		for (Employee employee : employees) {
 			if (employee.getId() == employeeId) {
 				if (updatedEmployee.getAge() != 0) {
@@ -57,13 +63,7 @@ public class EmployeeRepository {
 		return updatedEmployee;
 	}
 
-	public List<Employee> findByGender(String gender) {
-		return employees.stream()
-						.filter(employee -> employee.getGender().equals(gender))
-						.collect(Collectors.toList());
-	}
-
-	public List<Employee> findByPage(int firstEmployee, int lastEmployee) {
-		return employees.subList(firstEmployee, lastEmployee);
+	public void delete(int employeeId) {
+		employees.removeIf(employee -> employee.getId() == employeeId);
 	}
 }
