@@ -20,19 +20,35 @@ public class Company {
 	}
 
 
-	public int getCompanyId() { return companyId; }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-	public void setCompanyId(int companyId) { this.companyId = companyId; }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-	public String getCompanyName() { return companyName; }
+	public String getCompanyName() {
+		return companyName;
+	}
 
-	public void setCompanyName(String companyName) { this.companyName = companyName; }
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
-	public int getEmployeesNumber() { return employeesNumber; }
+	public int getEmployeesNumber() {
+		return employeesNumber;
+	}
 
-	public void setEmployeesNumber(int employeesNumber) { this.employeesNumber = employeesNumber; }
+	public void setEmployeesNumber(int employeesNumber) {
+		this.employeesNumber = employeesNumber;
+	}
 
-	public List<Employee> getEmployees() { return employees; }
+	public List<Employee> getEmployees() {
+		return employees;
+	}
 
-	public void setEmployees(List<Employee> employees) { this.employees = employees; }
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
 }
