@@ -2,8 +2,6 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.controller.EmployeeController;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import io.restassured.http.ContentType;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -12,8 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -36,11 +32,30 @@ public class EmployeeControllerTest {
 		RestAssuredMockMvc.standaloneSetup(employeeController);
 	}
 
-	@Mock
-	EmployeeService mockEmployeeService;
+	@Test
+	public void should_find_all_employees() {
+		MockMvcResponse response = given()
+						.contentType(ContentType.JSON)
+						.when()
+						.get("/employees");
+
+		List<Employee> employees = response
+						.getBody()
+						.as(
+										new TypeRef<List<Employee>>() {
+											@Override
+											public Type getType() {
+												return super.getType();
+											}
+										}
+						);
+
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+		Assert.assertEquals(5, employees.size());
+	}
 
 	@Test
-	public void shouldFindEmployeeById() {
+	public void should_find_employee_by_id() {
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
@@ -50,15 +65,15 @@ public class EmployeeControllerTest {
 						.getBody()
 						.as(Employee.class);
 
-		Assert.assertEquals(200, response.getStatusCode());
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 		Assert.assertEquals(1, employee.getId());
-		Assert.assertEquals("xiaoming", employee.getName());
+		Assert.assertEquals("Xiaohong", employee.getName());
 	}
 
 	@Test
-	public void shouldFindEmployeeByGender() {
+	public void should_find_employee_by_gender() {
 		MockMvcResponse response = given()
-						.params("gender", "male")
+						.params("gender", "Male")
 						.contentType(ContentType.JSON)
 						.when()
 						.get("/employees");
@@ -75,13 +90,13 @@ public class EmployeeControllerTest {
 						);
 
 		Assert.assertEquals(200, response.getStatusCode());
-		Assert.assertEquals(1, employees.size());
-		Assert.assertEquals("xiaoming", employees.get(0).getName());
+		Assert.assertEquals(3, employees.size());
+		Assert.assertEquals("Xiaoming", employees.get(0).getName());
 	}
 
 	@Test
-	public void shouldAddEmployee() {
-		Employee newEmployee = new Employee(3, "matt", 10, "male", 10000);
+	public void should_add_new_employee() {
+		Employee newEmployee = new Employee(5, "Matt", 10, "Male", 10000);
 
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
@@ -94,17 +109,33 @@ public class EmployeeControllerTest {
 						.as(Employee.class);
 
 		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
-		Assert.assertEquals("matt", employee.getName());
+		Assert.assertEquals("Matt", employee.getName());
 	}
 
 	@Test
-	public void shouldDeleteEmployee() {
-
+	public void should_delete_employee() {
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
 						.delete("/employees/1");
 
-		Assert.assertEquals(200, response.getStatusCode());
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+	}
+
+	@Test
+	public void should_update_employee() {
+		Employee updatedEmployee = new Employee(0, "Xiaoxiaoming", 10, "Male", 10000);
+		MockMvcResponse response = given()
+						.contentType(ContentType.JSON)
+						.body(updatedEmployee)
+						.when()
+						.put("/employees/0");
+
+		Employee employee = response
+						.getBody()
+						.as(Employee.class);
+
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+		Assert.assertEquals("Xiaoxiaoming", employee.getName());
 	}
 }

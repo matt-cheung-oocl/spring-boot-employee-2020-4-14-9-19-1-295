@@ -13,8 +13,13 @@ public class EmployeeRepository {
 	private List<Employee> employees = new ArrayList<>();
 
 	public EmployeeRepository() {
-		employees.add(new Employee(1, "xiaoming", 22, "male", 5000));
-		employees.add(new Employee(2, "xiaohong", 24, "female", 6000));
+		employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000));
+		employees.add(new Employee(1, "Xiaohong", 19, "Female", 6000));
+		employees.add(new Employee(2, "Xiaozhi", 15, "Male", 7000));
+		employees.add(new Employee(3, "Xiaogang", 16, "Male", 8000));
+		employees.add(new Employee(4, "Xiaoxia", 15, "Female", 9000));
+
+
 	}
 
 	public List<Employee> findAll() {
