@@ -9,6 +9,13 @@ public class Company {
 	private int employeesNumber;
 	private List<Employee> employees;
 
+	public Company(int companyId, String companyName, int employeesNumber, List<Employee> employees) {
+		this.companyId = companyId;
+		this.companyName = companyName;
+		this.employeesNumber = employeesNumber;
+		this.employees = employees;
+	}
+
 	public int getCompanyId() { return companyId; }
 
 	public void setCompanyId(int companyId) { this.companyId = companyId; }

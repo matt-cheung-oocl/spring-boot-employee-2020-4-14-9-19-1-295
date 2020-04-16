@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.thoughtworks.springbootemployee.EmployeeFactory.createTestEmployees;
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	private List<Employee> employees = new ArrayList<>();
+	//private List<Employee> employees = new ArrayList<>();
+	private List<Employee> employees = createTestEmployees();
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
