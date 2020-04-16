@@ -14,9 +14,9 @@ public class CompanyRepository {
 	private List<Company> companies = new ArrayList<>();
 
 	public CompanyRepository() {
-
+		companies.add(new Company(0, "OOCL", 5, EmployeeRepository.getEmployees()));
+		companies.add(new Company(1, "CargoSmart", 5, EmployeeRepository.getEmployees()));
 	}
-
 
 	public List<Company> findAll() {
 		return companies;
