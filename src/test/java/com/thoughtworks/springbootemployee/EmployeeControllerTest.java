@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Type;
@@ -64,10 +65,28 @@ public class EmployeeControllerTest {
 												return super.getType();
 											}
 										}
-												);
+						);
 
 		Assert.assertEquals(200, response.getStatusCode());
 		Assert.assertEquals(1, employees.size());
 		Assert.assertEquals("xiaoming", employees.get(0).getName());
+	}
+
+	@Test
+	public void shouldAddEmployee() {
+		Employee newEmployee = new Employee(3, "matt", 10, "male", 10000);
+
+		MockMvcResponse response = given()
+						.contentType(ContentType.JSON)
+						.body(newEmployee)
+						.when()
+						.post("/employees");
+
+		Employee employee = response
+						.getBody()
+						.as(Employee.class);
+
+		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+		Assert.assertEquals("matt", employee.getName());
 	}
 }
