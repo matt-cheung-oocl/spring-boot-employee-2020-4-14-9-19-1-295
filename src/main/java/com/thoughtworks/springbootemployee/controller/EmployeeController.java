@@ -1,20 +1,22 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.thoughtworks.springbootemployee.EmployeeFactory.createTestEmployees;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	//private List<Employee> employees = new ArrayList<>();
-	private List<Employee> employees = createTestEmployees();
+	private List<Employee> employees = new ArrayList<>();
+
+	@Autowired
+	private EmployeeService employeeService;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -22,52 +24,35 @@ public class EmployeeController {
 																				@RequestParam(required = false) Integer page,
 																				@RequestParam(required = false) Integer pageSize) {
 		if (gender != null) {
-			return employees.stream()
-							.filter(employee -> employee.getGender().equals(gender))
-							.collect(Collectors.toList());
+			return employeeService.getEmployeesByGender(gender);
 		}
-
 		if (page != null && pageSize != null) {
-			int firstEmployee = page * pageSize - 1;
-			int lastEmployee = page * pageSize - 1 + pageSize;
-			return employees.subList(firstEmployee, lastEmployee);
+			return employeeService.getEmployeesByPage(page, pageSize);
 		}
-		return employees;
+		return employeeService.getAllEmployees();
 	}
 
 	@GetMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee getSpecificEmployee(@PathVariable int employeeId) {
-		return employees.stream()
-						.filter(employee -> employee.getId() == employeeId)
-						.findFirst()
-						.orElse(null);
+	public Employee getSpecificEmployee(@PathVariable Integer employeeId) {
+		return employeeService.getEmployeeById(employeeId);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Employee addNewEmployee(@RequestBody Employee employee) {
-		employees.add(employee);
-		return employee;
+		return employeeService.createEmployee(employee);
 	}
 
 	@PutMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee updatedEmployee) {
-		for (Employee employee : employees) {
-			if (employee.getId() == employeeId) {
-				employee.setAge(updatedEmployee.getAge());
-				employee.setGender(updatedEmployee.getGender());
-				employee.setName(updatedEmployee.getName());
-				employee.setSalary(updatedEmployee.getSalary());
-			}
-		}
-		return updatedEmployee;
+		return employeeService.updateEmployee(employeeId, updatedEmployee);
 	}
 
 	@DeleteMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteEmployee(@PathVariable Integer employeeId) {
-		employees.removeIf(employee -> employee.getId() == employeeId);
+		employeeService.removeEmployee(employeeId);
 	}
 }

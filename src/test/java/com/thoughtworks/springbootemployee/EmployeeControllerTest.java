@@ -2,6 +2,8 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.controller.EmployeeController;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import io.restassured.http.ContentType;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -10,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -31,6 +35,9 @@ public class EmployeeControllerTest {
 	public void setUp() throws Exception {
 		RestAssuredMockMvc.standaloneSetup(employeeController);
 	}
+
+	@Mock
+	EmployeeService mockEmployeeService;
 
 	@Test
 	public void shouldFindEmployeeById() {
@@ -88,5 +95,16 @@ public class EmployeeControllerTest {
 
 		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 		Assert.assertEquals("matt", employee.getName());
+	}
+
+	@Test
+	public void shouldDeleteEmployee() {
+
+		MockMvcResponse response = given()
+						.contentType(ContentType.JSON)
+						.when()
+						.delete("/employees/1");
+
+		Assert.assertEquals(200, response.getStatusCode());
 	}
 }

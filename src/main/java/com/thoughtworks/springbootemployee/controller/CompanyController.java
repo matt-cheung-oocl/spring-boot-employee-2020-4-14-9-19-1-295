@@ -2,6 +2,9 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.CompanyService;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,9 @@ public class CompanyController {
 
 	private List<Company> companies = new ArrayList<Company>();
 
+	@Autowired
+	private CompanyService companyService;
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<Company> getCompanies(@RequestParam(required = false) Integer page,
@@ -24,7 +30,7 @@ public class CompanyController {
 			int lastEmployee = page * pageSize - 1 + pageSize;
 			return companies.subList(firstEmployee, lastEmployee);
 		}
-		return companies;
+		return e ;
 	}
 
 	@GetMapping("/{companyId}")
