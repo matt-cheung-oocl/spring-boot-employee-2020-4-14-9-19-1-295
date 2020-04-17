@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -14,8 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Company {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer companyId;
 	private String companyName;
 	private Integer employeesNumber;
+
+	@OneToMany(targetEntity = Employee.class, mappedBy = "companyId", fetch = FetchType.EAGER)
 	private List<Employee> employees;
 }

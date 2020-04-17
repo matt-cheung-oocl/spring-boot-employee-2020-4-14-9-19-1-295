@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CompanyService {
@@ -24,12 +23,16 @@ public class CompanyService {
 		return companyRepository.findAll(PageRequest.of(page, pageSize)).getContent();
 	}
 
-	public Optional<Company> getCompanyById(int companyId) {
-		return companyRepository.findById(companyId);
+	public Company getCompanyById(int companyId) {
+		return companyRepository.findById(companyId).orElse(null);
 	}
 
 	public List<Employee> getEmployeesById(int companyId) {
-		return companyRepository.findEmployeesById(companyId);
+		Company company = companyRepository.findById(companyId).orElse(null);
+		if (company != null) {
+			return company.getEmployees();
+		}
+		return null;
 	}
 
 	public Company createCompany(Company company) {

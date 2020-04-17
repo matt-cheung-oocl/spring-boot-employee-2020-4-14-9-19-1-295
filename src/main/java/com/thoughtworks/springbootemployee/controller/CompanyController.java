@@ -32,7 +32,7 @@ public class CompanyController {
 
 	@GetMapping("/{companyId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Company> getSpecificCompany(@PathVariable int companyId) {
+	public Company getSpecificCompany(@PathVariable int companyId) {
 		return companyService.getCompanyById(companyId);
 	}
 
