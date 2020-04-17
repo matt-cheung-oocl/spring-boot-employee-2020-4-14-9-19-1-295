@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/companies")
@@ -31,7 +32,7 @@ public class CompanyController {
 
 	@GetMapping("/{companyId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Company getSpecificCompany(@PathVariable int companyId) {
+	public Optional<Company> getSpecificCompany(@PathVariable int companyId) {
 		return companyService.getCompanyById(companyId);
 	}
 

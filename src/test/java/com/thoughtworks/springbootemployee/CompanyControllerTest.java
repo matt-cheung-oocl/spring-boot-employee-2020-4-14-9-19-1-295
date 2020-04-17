@@ -117,23 +117,23 @@ public class CompanyControllerTest {
 		Assert.assertEquals(5, employees.size());
 	}
 
-	@Test
-	public void should_add_new_company() {
-		Company newCompany = new Company(2, "COSCO", 5, EmployeeRepository.getEmployees());
-
-		MockMvcResponse response = given()
-						.contentType(ContentType.JSON)
-						.body(newCompany)
-						.when()
-						.post("/companies");
-
-		Company company = response
-						.getBody()
-						.as(Company.class);
-
-		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
-		Assert.assertEquals("COSCO", company.getCompanyName());
-	}
+//	@Test
+//	public void should_add_new_company() {
+//		Company newCompany = new Company(2, "COSCO", 5, EmployeeRepository.getEmployees());
+//
+//		MockMvcResponse response = given()
+//						.contentType(ContentType.JSON)
+//						.body(newCompany)
+//						.when()
+//						.post("/companies");
+//
+//		Company company = response
+//						.getBody()
+//						.as(Company.class);
+//
+//		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+//		Assert.assertEquals("COSCO", company.getCompanyName());
+//	}
 
 	@Test
 	public void should_delete_company() {

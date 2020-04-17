@@ -4,9 +4,11 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
@@ -19,12 +21,10 @@ public class CompanyService {
 	}
 
 	public List<Company> getCompaniesByPage(Integer page, Integer pageSize) {
-		int firstCompany = page * pageSize - 1;
-		int lastCompany = page * pageSize - 1 + pageSize;
-		return companyRepository.findByPage(firstCompany, lastCompany);
+		return companyRepository.findAll(PageRequest.of(page, pageSize)).getContent();
 	}
 
-	public Company getCompanyById(int companyId) {
+	public Optional<Company> getCompanyById(int companyId) {
 		return companyRepository.findById(companyId);
 	}
 
@@ -37,10 +37,23 @@ public class CompanyService {
 	}
 
 	public Company updateCompany(int companyId, Company updatedCompany) {
-		return companyRepository.update(companyId, updatedCompany);
+		Company company = companyRepository.findById(companyId).orElse(null);
+		if (company == null) {
+			return null;
+		}
+		if (updatedCompany.getCompanyName() != null) {
+			company.setCompanyName(updatedCompany.getCompanyName());
+		}
+		if (updatedCompany.getEmployeesNumber() != null) {
+			company.setEmployeesNumber(updatedCompany.getEmployeesNumber());
+		}
+		if (updatedCompany.getEmployees() != null) {
+			company.setEmployees(updatedCompany.getEmployees());
+		}
+		return companyRepository.save(company);
 	}
 
 	public void removeCompany(int companyId) {
-		companyRepository.delete(companyId);
+		companyRepository.deleteById(companyId);
 	}
 }

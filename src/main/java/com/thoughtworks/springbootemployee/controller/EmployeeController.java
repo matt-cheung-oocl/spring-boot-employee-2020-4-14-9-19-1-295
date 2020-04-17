@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -17,6 +18,9 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	public EmployeeController(EmployeeService employeeService) {
+	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -34,7 +38,7 @@ public class EmployeeController {
 
 	@GetMapping("/{employeeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee getSpecificEmployee(@PathVariable int employeeId) {
+	public Optional<Employee> getSpecificEmployee(@PathVariable int employeeId) {
 		return employeeService.getEmployeeById(employeeId);
 	}
 
