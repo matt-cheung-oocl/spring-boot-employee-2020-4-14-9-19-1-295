@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -23,19 +22,19 @@ public class EmployeeService {
 		return employeeRepository.findAllByGender(gender);
 	}
 
-	public List<Employee> getEmployeesByPage(int page, int pageSize) {
+	public List<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
 		return employeeRepository.findAll(PageRequest.of(page, pageSize)).getContent();
 	}
 
-	public Optional<Employee> getEmployeeById(int employeeId) {
-		return employeeRepository.findById(employeeId);
+	public Employee getEmployeeById(Integer employeeId) {
+		return employeeRepository.findById(employeeId).orElse(null);
 	}
 
 	public Employee createEmployee(Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
-	public Employee updateEmployee(int employeeId, Employee updatedEmployee) {
+	public Employee updateEmployee(Integer employeeId, Employee updatedEmployee) {
 		Employee employee = employeeRepository.findById(employeeId).orElse(null);
 		if (employee == null) {
 			return null;
@@ -55,5 +54,5 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
-	public void removeEmployee(int employeeId) { employeeRepository.deleteById(employeeId); }
+	public void removeEmployee(Integer employeeId) { employeeRepository.deleteById(employeeId); }
 }
