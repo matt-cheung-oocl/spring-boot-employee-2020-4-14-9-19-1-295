@@ -166,7 +166,6 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_delete_employee() {
-		//doReturn(employees).when(employeeService).removeEmployee(any());
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
