@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -29,29 +28,34 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest
 public class EmployeeControllerTest {
 
-	private List<Employee> employees = new ArrayList<>();
+	private List<Employee> allEmployees = new ArrayList<>();
+	private List<Employee> employeesByGender = new ArrayList<>();
+	private List<Employee> employeesByPaging = new ArrayList<>();
 
 	@Mock
 	private EmployeeService employeeService;
 
-	@Autowired
-	private EmployeeController employeeController;
-
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		EmployeeController employeeController = new EmployeeController(employeeService);
 		RestAssuredMockMvc.standaloneSetup(employeeController);
 
-		employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000));
-		employees.add(new Employee(1, "Xiaohong", 19, "Female", 6000));
-		employees.add(new Employee(2, "Xiaozhi", 15, "Male", 7000));
-		employees.add(new Employee(3, "Xiaogang", 16, "Male", 8000));
-		employees.add(new Employee(4, "Xiaoxia", 15, "Female", 9000));
+		allEmployees.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0));
+		allEmployees.add(new Employee(1, "Xiaohong", 19, "Female", 6000, 0));
+		allEmployees.add(new Employee(2, "Xiaozhi", 15, "Male", 7000, 0));
+		allEmployees.add(new Employee(3, "Xiaogang", 16, "Male", 8000, 1));
+		allEmployees.add(new Employee(4, "Xiaoxia", 15, "Female", 9000, 1));
+
+		employeesByGender.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0));
+		employeesByGender.add(new Employee(2, "Xiaozhi", 15, "Male", 7000, 0));
+		employeesByGender.add(new Employee(3, "Xiaogang", 16, "Male", 8000, 1));
+
+		employeesByPaging.add(new Employee(1, "Xiaohong", 19, "Female", 6000, 0));
 	}
 
 	@Test
 	public void should_find_all_employees() {
-		doReturn(employees).when(employeeService).getAllEmployees();
+		doReturn(allEmployees).when(employeeService).getAllEmployees();
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
@@ -74,7 +78,8 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_find_employee_by_id() {
-		doReturn(employees).when(employeeService).getEmployeeById(any());
+		Employee returnEmployee = (new Employee(1, "Xiaohong", 20, "Male", 5000, 0));
+		doReturn(returnEmployee).when(employeeService).getEmployeeById(any());
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
@@ -85,13 +90,13 @@ public class EmployeeControllerTest {
 						.as(Employee.class);
 
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-		Assert.assertEquals(1, java.util.Optional.ofNullable(employee.getId()));
+		Assert.assertEquals(new Integer(1), employee.getId());
 		Assert.assertEquals("Xiaohong", employee.getName());
 	}
 
 	@Test
 	public void should_find_employee_by_gender() {
-		doReturn(employees).when(employeeService).getEmployeesByGender(any());
+		doReturn(employeesByGender).when(employeeService).getEmployeesByGender(any());
 		MockMvcResponse response = given()
 						.params("gender", "Male")
 						.contentType(ContentType.JSON)
@@ -116,7 +121,7 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_find_employee_with_page_2_and_page_size_1() {
-		doReturn(employees).when(employeeService).getEmployeesByPage(any(), any());
+		doReturn(employeesByPaging).when(employeeService).getEmployeesByPage(any(), any());
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
@@ -140,8 +145,10 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_add_new_employee() {
-		doReturn(employees).when(employeeService).createEmployee(any());
-		Employee newEmployee = new Employee(5, "Matt", 10, "Male", 10000);
+		Employee returnEmployee = (new Employee(5, "Matt", 10, "Male", 10000, 1));
+		doReturn(returnEmployee).when(employeeService).createEmployee(any());
+
+		Employee newEmployee = new Employee(5, "Matt", 10, "Male", 10000, 1);
 
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
@@ -159,7 +166,7 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_delete_employee() {
-		doReturn(employees).when(employeeService).removeEmployee(any());
+		//doReturn(employees).when(employeeService).removeEmployee(any());
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.when()
@@ -170,8 +177,11 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void should_update_employee() {
-		doReturn(employees).when(employeeService).updateEmployee(any(), any());
-		Employee updatedEmployee = new Employee(0, "Xiaoxiaoming", 10, "Male", 10000);
+		Employee returnEmployee = new Employee(0, "Xiaoxiaoming", 10, "Male", 10000, 0);
+		doReturn(returnEmployee).when(employeeService).updateEmployee(any(), any());
+
+		Employee updatedEmployee = new Employee(0, "Xiaoxiaoming", 10, "Male", 10000, 0);
+
 		MockMvcResponse response = given()
 						.contentType(ContentType.JSON)
 						.body(updatedEmployee)
