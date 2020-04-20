@@ -23,11 +23,11 @@ public class CompanyService {
 		return companyRepository.findAll(PageRequest.of(page, pageSize)).getContent();
 	}
 
-	public Company getCompanyById(int companyId) {
+	public Company getCompanyById(Integer companyId) {
 		return companyRepository.findById(companyId).orElse(null);
 	}
 
-	public List<Employee> getEmployeesById(int companyId) {
+	public List<Employee> getEmployeesById(Integer companyId) {
 		Company company = companyRepository.findById(companyId).orElse(null);
 		if (company != null) {
 			return company.getEmployees();
@@ -39,7 +39,7 @@ public class CompanyService {
 		return companyRepository.save(company);
 	}
 
-	public Company updateCompany(int companyId, Company updatedCompany) {
+	public Company updateCompany(Integer companyId, Company updatedCompany) {
 		Company company = companyRepository.findById(companyId).orElse(null);
 		if (company == null) {
 			return null;
@@ -56,7 +56,7 @@ public class CompanyService {
 		return companyRepository.save(company);
 	}
 
-	public void removeCompany(int companyId) {
+	public void removeCompany(Integer companyId) {
 		companyRepository.deleteById(companyId);
 	}
 }

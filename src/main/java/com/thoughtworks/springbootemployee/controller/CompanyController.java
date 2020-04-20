@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/companies")
@@ -19,6 +18,10 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService companyService;
+
+	public CompanyController(CompanyService companyService) {
+		this.companyService = companyService;
+	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -32,13 +35,13 @@ public class CompanyController {
 
 	@GetMapping("/{companyId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Company getSpecificCompany(@PathVariable int companyId) {
+	public Company getSpecificCompany(@PathVariable Integer companyId) {
 		return companyService.getCompanyById(companyId);
 	}
 
 	@GetMapping("/{companyId}/employees")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Employee> getEmployeesOfSpecificCompany(@PathVariable int companyId) {
+	public List<Employee> getEmployeesOfSpecificCompany(@PathVariable Integer companyId) {
 		return companyService.getEmployeesById(companyId);
 	}
 
@@ -50,13 +53,13 @@ public class CompanyController {
 
 	@PutMapping("/{companyId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Company updateCompany(@PathVariable int companyId, @RequestBody Company updatedCompany) {
+	public Company updateCompany(@PathVariable Integer companyId, @RequestBody Company updatedCompany) {
 		return companyService.updateCompany(companyId, updatedCompany);
 	}
 
 	@DeleteMapping("/{companyId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteCompany(@PathVariable int companyId) {
+	public void deleteCompany(@PathVariable Integer companyId) {
 		companyService.removeCompany(companyId);
 	}
 }
